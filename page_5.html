@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library — Page 5</title>
+
+  <style>
+    :root{
+      --bg0:#07070b;
+      --bg1:#0b0c12;
+      --panel: rgba(255,255,255,.05);
+      --line: rgba(255,255,255,.10);
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --accent:#a78bfa;
+      --accent2:#60a5fa;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(167,139,250,.22), transparent 60%),
+        radial-gradient(900px 520px at 105% 5%, rgba(96,165,250,.18), transparent 55%),
+        radial-gradient(700px 500px at 40% 120%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    .wrap{max-width:1120px; margin:0 auto; padding:28px 14px 44px}
+
+    header{
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--r);
+      overflow:hidden;
+    }
+
+    .head-inner{padding: 18px 16px 14px}
+    h1{margin:0; font-size:22px; letter-spacing:.3px; line-height:1.15}
+    .sub{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35}
+
+    .top-nav{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      padding: 12px 12px 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+    }
+    .top-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+      font-weight: 650;
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .top-nav a:hover{ border-color: rgba(167,139,250,.50) }
+    .top-nav a[aria-current="page"]{
+      border-color: rgba(96,165,250,.70);
+      box-shadow: 0 0 0 3px rgba(96,165,250,.18) inset;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin: 16px 2px 14px;
+    }
+    input[type="search"]{
+      flex:1 1 260px;
+      min-width: 220px;
+      padding:11px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+      outline:none;
+    }
+    input[type="search"]::placeholder{ color: rgba(255,255,255,.45) }
+    input[type="search"]:focus{ border-color: rgba(96,165,250,.55) }
+
+    button{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      cursor:pointer;
+    }
+    button:hover{ border-color: rgba(167,139,250,.50) }
+
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px}
+
+    .card{
+      grid-column: span 12;
+      border-radius: var(--r);
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    details{width:100%}
+    summary{
+      list-style:none;
+      user-select:none;
+      cursor:pointer;
+      padding: 13px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: rgba(0,0,0,.14);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    summary::-webkit-details-marker{display:none}
+
+    .left{display:flex; align-items:center; gap:10px; min-width:0}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(96,165,250,.70);
+      flex: 0 0 auto;
+    }
+    .pill{
+      font-size: 11px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
+      flex: 0 0 auto;
+    }
+    .title{
+      font-weight: 750;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 72vw;
+    }
+    .chev{
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      flex: 0 0 auto;
+    }
+    details[open] .chev{ color: var(--accent2) }
+
+    .content{padding: 12px 14px 14px; background: rgba(0,0,0,.08)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+    a.link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+    }
+    a.link:hover{ border-color: rgba(167,139,250,.50) }
+
+    iframe{
+      width:100%;
+      height: 74vh;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.58);
+      line-height: 1.35;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="head-inner">
+        <h1>Library</h1>
+        <div class="sub">Page 5 • First 4 items start expanded. Everything is collapsible. Search filters titles/IDs.</div>
+      </div>
+
+      <nav class="top-nav" aria-label="Pages">
+        <a href="index.html">Page 1</a>
+        <a href="page_2.html">Page 2</a>
+        <a href="page_3.html">Page 3</a>
+        <a href="page_4.html">Page 4</a>
+        <a href="page_5.html" aria-current="page">Page 5</a>
+        <a href="page_6.html">Page 6</a>
+        <a href="page_7.html">Page 7</a>
+      </nav>
+    </header>
+
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Search PDFs (type part of an ID, or the label)" autocomplete="off" />
+      <button id="expandAll" type="button">Expand all</button>
+      <button id="collapseAll" type="button">Collapse all</button>
+    </div>
+
+    <div id="list" class="grid"></div>
+  </div>
+
+  <script>
+    const items = [
+      { kind:"pdf", id:"1AkTF9DhLu-U2UpcUi40fiQ1Or722PtP0", label:"PDF 118" },
+      { kind:"pdf", id:"1B3xoTGWXcFLH6l-gEN8uFrQUjqByhLiR", label:"PDF 119" },
+      { kind:"pdf", id:"1Fr50foTBtfuyv3cmzr9b18f3C_XKJckE", label:"PDF 120" },
+      { kind:"pdf", id:"1G6N6j4AA_IPOsu99Nz6QjMPRYDXgFpMQ", label:"PDF 121" },
+
+      { kind:"pdf", id:"1Ix8WwLzfUGqfojc6kAlzS6GNzHW_L8xb", label:"PDF 122" },
+      { kind:"pdf", id:"1J85xT9MbSe0P-8aY5FU7Lg-ZPtd6BZYL", label:"PDF 123" },
+      { kind:"pdf", id:"1KrasGrlPBDI4J8cnO6TRVlU3P8Ilgbhn", label:"PDF 124" },
+      { kind:"pdf", id:"1PXHSj-xA7iryR3UUAyzn9BNJSpq_Jagp", label:"PDF 125" },
+      { kind:"pdf", id:"1PqCZscA743AQXs8tc9GZ6ZqLpNk5XEGp", label:"PDF 126" },
+      { kind:"pdf", id:"1RPKNUlXr6W-Lyl25WaLqVJ9rszm2_xBw", label:"PDF 127" },
+      { kind:"pdf", id:"1SPMmCmZudrSsS_dXVEs0HQPoKzPiVTds", label:"PDF 128" },
+      { kind:"pdf", id:"1Z94bB80FKBva4UgfmrN2egcGnGU446aq", label:"PDF 129" },
+      { kind:"pdf", id:"1ddKHioKWgcM5yvkC92-LGIPvA7eYOHRU", label:"PDF 130" },
+      { kind:"pdf", id:"1fd-2T6BsxStALY5G7nS-xmecQJ3Yu2SD", label:"PDF 131" },
+      { kind:"pdf", id:"1jk539mSUsex8GYaEFPRjuAxZD2c3lj6D", label:"PDF 132" },
+    ];
+
+    const listEl = document.getElementById("list");
+    const qEl = document.getElementById("q");
+
+    function openUrl(item){
+      return `https://drive.google.com/file/d/${item.id}/view`;
+    }
+
+    function previewUrl(item){
+      return `https://drive.google.com/file/d/${item.id}/preview`;
+    }
+
+    function render(){
+      const q = (qEl.value || "").trim().toLowerCase();
+      listEl.innerHTML = "";
+
+      let shown = 0;
+
+      items.forEach((item, idx) => {
+        const hay = `${item.label} ${item.id} ${item.kind}`.toLowerCase();
+        if(q && !hay.includes(q)) return;
+
+        shown++;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const details = document.createElement("details");
+        if(idx < 4) details.open = true;
+
+        const summary = document.createElement("summary");
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const dot = document.createElement("span");
+        dot.className = "dot";
+
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = "PDF";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = item.label;
+
+        left.appendChild(dot);
+        left.appendChild(pill);
+        left.appendChild(title);
+
+        const chev = document.createElement("div");
+        chev.className = "chev";
+        chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+
+        summary.appendChild(left);
+        summary.appendChild(chev);
+
+        const content = document.createElement("div");
+        content.className = "content";
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const aOpen = document.createElement("a");
+        aOpen.className = "link";
+        aOpen.href = openUrl(item);
+        aOpen.target = "_blank";
+        aOpen.rel = "noopener noreferrer";
+        aOpen.textContent = "Open";
+        actions.appendChild(aOpen);
+
+        content.appendChild(actions);
+
+        const iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.allow = "autoplay";
+        iframe.src = previewUrl(item);
+        content.appendChild(iframe);
+
+        const hint = document.createElement("div");
+        hint.className = "hint";
+        hint.textContent = "If it doesn’t load, the file probably isn’t shared for link viewing.";
+        content.appendChild(hint);
+
+        details.appendChild(summary);
+        details.appendChild(content);
+        card.appendChild(details);
+        listEl.appendChild(card);
+
+        details.addEventListener("toggle", () => {
+          chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+        });
+      });
+
+      if(shown === 0){
+        const empty = document.createElement("div");
+        empty.style.color = "rgba(255,255,255,.7)";
+        empty.style.padding = "14px 6px";
+        empty.textContent = "No matches. Try a different search.";
+        listEl.appendChild(empty);
+      }
+    }
+
+    document.getElementById("expandAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = true);
+    });
+
+    document.getElementById("collapseAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = false);
+    });
+
+    qEl.addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
