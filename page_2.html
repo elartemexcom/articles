@@ -1,0 +1,425 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library — Page 2</title>
+
+  <style>
+    :root{
+      --bg0:#07070b;
+      --bg1:#0b0c12;
+      --card: rgba(255,255,255,.05);
+      --card2: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.10);
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --accent: #a78bfa;
+      --accent2:#60a5fa;
+      --good: rgba(34,197,94,.85);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(167,139,250,.22), transparent 60%),
+        radial-gradient(900px 520px at 105% 5%, rgba(96,165,250,.18), transparent 55%),
+        radial-gradient(700px 500px at 40% 120%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    .wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 14px 44px;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing: .3px;
+      line-height:1.15;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .bar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin: 14px 0 16px;
+    }
+
+    .chip, .btn, .navbtn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
+    }
+    .btn:hover, .navbtn:hover{ border-color: rgba(167,139,250,.50) }
+
+    input[type="search"]{
+      flex: 1 1 260px;
+      min-width: 220px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+      outline: none;
+    }
+    input[type="search"]::placeholder{ color: rgba(255,255,255,.45) }
+    input[type="search"]:focus{ border-color: rgba(96,165,250,.55) }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .card{
+      grid-column: span 12;
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    details{ width:100% }
+    summary{
+      list-style:none;
+      user-select:none;
+      cursor:pointer;
+      padding: 13px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: rgba(0,0,0,.18);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    summary::-webkit-details-marker{display:none}
+
+    .left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .badge{
+      font-size: 11px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
+      flex: 0 0 auto;
+    }
+
+    .name{
+      font-weight: 700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 72vw;
+    }
+
+    .chev{
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      flex: 0 0 auto;
+    }
+    details[open] .chev{ color: var(--accent2) }
+
+    .content{
+      padding: 12px 14px 14px;
+      background: rgba(0,0,0,.10);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+
+    a.link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+    }
+    a.link:hover{ border-color: rgba(167,139,250,.50) }
+
+    .dot{
+      width:8px; height:8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.28);
+    }
+
+    iframe{
+      width:100%;
+      height: 74vh;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.58);
+      line-height: 1.35;
+    }
+
+    .footer{
+      margin-top: 18px;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    @media (min-width: 860px){
+      .card{ grid-column: span 12; }
+      h1{ font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Library</h1>
+        <p class="sub">Page 2 • Expand a card to read.</p>
+      </div>
+      <div class="chip" title="Tip">✨ click any row to expand</div>
+    </header>
+
+    <div class="bar">
+      <a class="navbtn" href="index.html">← Page 1</a>
+      <input id="q" type="search" placeholder="Search PDFs (type part of an ID, or the label)" autocomplete="off" />
+      <button class="btn" id="expandAll" type="button">Expand all</button>
+      <button class="btn" id="collapseAll" type="button">Collapse all</button>
+    </div>
+
+    <div id="list" class="grid"></div>
+
+    <div class="footer">Tip: rename labels in the items[] list to match chapters/series names.</div>
+  </div>
+
+  <script>
+    // Clean, neutral: we call everything a PDF, and keep it aesthetic.
+    // First 4 start expanded.
+    // Folders are listed as "Collection" and open in a new tab (no iframe).
+    const items = [
+      { kind:"pdf", id:"1vppabVpxGGnMHMlR6YSjC3XT17QwpHlx", label:"PDF 001" },
+      { kind:"collection", id:"1edTK9mJCeb9Hwu2eheYKSvVqF8g9-x7V", label:"Collection 001" },
+      { kind:"pdf", id:"1iKLnSpOO5u8MraO8iW2NVHlvByoZGGc-", label:"PDF 002" },
+      { kind:"pdf", id:"1VOwAjwPdjfATjPxaJlvjQLPAsGZFV7Ag", label:"PDF 003" },
+
+      { kind:"pdf", id:"1yXLMxnhzt6mpQln1K03i0f5rIgbwJ34U", label:"PDF 004" },
+      { kind:"pdf", id:"1XcPsf_0kW6150SS4TIQaCcP8C5fGnrHi", label:"PDF 005" },
+      { kind:"pdf", id:"1UKyBv1ygHRsx0GX0qLR55sjyb_S52JaS", label:"PDF 006" },
+      { kind:"pdf", id:"1Zjsj7y0IhYjJx3oQRCgGWXxPwoqr1j6n", label:"PDF 007" },
+      { kind:"pdf", id:"19OrvylNYhQLtkXEEHDp-u5KVpsq38ZWP", label:"PDF 008" },
+      { kind:"pdf", id:"1pe4OwmzGURv1lfiMReReiwTpz2wRWV2l", label:"PDF 009" },
+      { kind:"pdf", id:"1vsqyrlygtCiHtevir5nzwug0FIDyEfD4", label:"PDF 010" },
+      { kind:"pdf", id:"1QyvSD7VyzU-Q55mVdvW5Qi5dXbSGPiKP", label:"PDF 011" },
+      { kind:"pdf", id:"15H578R5WOXqUHfHA_h6fmARh1mJjmSj0", label:"PDF 012" },
+      { kind:"pdf", id:"1S1u6rcSds7LQWUAcrthj6tn95KAowikT", label:"PDF 013" },
+      { kind:"pdf", id:"1tnbCXP1tNWQ9yPhCuoQZJdgQjyEf5DLu", label:"PDF 014" },
+      { kind:"pdf", id:"1jRsB1H8a3_pstU_APkfYXI2G51Nr5TaZ", label:"PDF 015" },
+      { kind:"pdf", id:"16JLQXTNu1sf9si5-BRGdt7gitT6WXJlT", label:"PDF 016" },
+      { kind:"pdf", id:"1IGgAHJDqwZ8SmfUAH7h7ztvKpdqwdJsc", label:"PDF 017" },
+      { kind:"pdf", id:"1Axi88Rz-2u6xIuH42wBZO635CErY49qP", label:"PDF 018" },
+      { kind:"pdf", id:"1ZuU50MwKV3TAjO-XBq6z1WtKjUracGNn", label:"PDF 019" },
+      { kind:"pdf", id:"1XvAc8DXy6vRbP95lM9G9xDsPQA0mTK-B", label:"PDF 020" },
+      { kind:"pdf", id:"1rBN3DJZqBixuOXgsueFJHMEPnd61G6xi", label:"PDF 021" },
+      { kind:"pdf", id:"1Uyue_s5gfw9kBjcvYR_vKNXQptwrN1ew", label:"PDF 022" },
+      { kind:"pdf", id:"1xBC9d1U0oAkmarJ_8QZdk3CjnBSU1GaV", label:"PDF 023" },
+      { kind:"pdf", id:"1HJEwIeY5Xlbdw1yu2-jZ5mlyWg1D1mpX", label:"PDF 024" },
+      { kind:"pdf", id:"1_l4CxogTlhDrR8aSwHJCotz7nGJKmIWl", label:"PDF 025" },
+      { kind:"pdf", id:"1nRsN4tfHNMMIt1eGP2ue1rQRa59ygwJi", label:"PDF 026" },
+      { kind:"pdf", id:"1Peddom9nt5sPCeIwTVuFH9p9aUyZMr9k", label:"PDF 027" },
+      { kind:"pdf", id:"1HnJ9-vxpntMsJPGIRmrPI9kwK9rVMNcB", label:"PDF 028" },
+      { kind:"pdf", id:"1ayF4L38UUGP0wuOykgybAWXrZYTXckcC", label:"PDF 029" },
+      { kind:"pdf", id:"15dyOoxFT9rDngFktqvdCvVpJ2Ql_OnqT", label:"PDF 030" },
+      { kind:"pdf", id:"1ITX5U_EihEZ3_dXAXQ5QvDEk3HKJgLyZ", label:"PDF 031" },
+      { kind:"pdf", id:"1mv31YEMq0fQWDq7Sh3Y3Vdx4RlFfilWG", label:"PDF 032" },
+      { kind:"pdf", id:"17KrpkDbBKmwzfWks0WJ3RX7tK6hDqemb", label:"PDF 033" },
+      { kind:"pdf", id:"1hXUVo50bECsrHohn1y2hJjd3jwDgJOTl", label:"PDF 034" },
+      { kind:"pdf", id:"1lmTYKw6qrMJz-SfASTp9AejsBSxXVOe3", label:"PDF 035" },
+    ];
+
+    const listEl = document.getElementById("list");
+    const qEl = document.getElementById("q");
+
+    // URLs (kept generic, no "drive" wording in the UI)
+    function openUrl(item){
+      if(item.kind === "collection"){
+        return `https://drive.google.com/drive/folders/${item.id}`;
+      }
+      return `https://drive.google.com/file/d/${item.id}/view`;
+    }
+    function previewUrl(item){
+      return `https://drive.google.com/file/d/${item.id}/preview`;
+    }
+
+    function iconDot(kind){
+      const d = document.createElement("span");
+      d.className = "dot";
+      if(kind === "pdf") d.style.background = "rgba(96,165,250,.70)";
+      if(kind === "collection") d.style.background = "rgba(167,139,250,.70)";
+      return d;
+    }
+
+    function render(){
+      const q = (qEl.value || "").trim().toLowerCase();
+      listEl.innerHTML = "";
+
+      let shown = 0;
+
+      items.forEach((item, idx) => {
+        const hay = `${item.label} ${item.id} ${item.kind}`.toLowerCase();
+        if(q && !hay.includes(q)) return;
+        shown++;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const details = document.createElement("details");
+        if(idx < 4) details.open = true;
+
+        const summary = document.createElement("summary");
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = (item.kind === "collection") ? "COLLECTION" : "PDF";
+
+        const name = document.createElement("div");
+        name.className = "name";
+        name.textContent = item.label;
+
+        left.appendChild(iconDot(item.kind));
+        left.appendChild(badge);
+        left.appendChild(name);
+
+        const chev = document.createElement("div");
+        chev.className = "chev";
+        chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+
+        summary.appendChild(left);
+        summary.appendChild(chev);
+
+        const content = document.createElement("div");
+        content.className = "content";
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const aOpen = document.createElement("a");
+        aOpen.className = "link";
+        aOpen.href = openUrl(item);
+        aOpen.target = "_blank";
+        aOpen.rel = "noopener noreferrer";
+        aOpen.innerHTML = `<span class="dot" style="background:rgba(34,197,94,.70)"></span> Open`;
+        actions.appendChild(aOpen);
+
+        content.appendChild(actions);
+
+        if(item.kind === "pdf"){
+          const iframe = document.createElement("iframe");
+          iframe.loading = "lazy";
+          iframe.allow = "autoplay";
+          iframe.src = previewUrl(item);
+          content.appendChild(iframe);
+
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "If it doesn’t load, the file probably isn’t shared for link viewing.";
+          content.appendChild(hint);
+        } else {
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "Collections open in a new tab for browsing.";
+          content.appendChild(hint);
+        }
+
+        details.appendChild(summary);
+        details.appendChild(content);
+        card.appendChild(details);
+        listEl.appendChild(card);
+
+        details.addEventListener("toggle", () => {
+          chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+        });
+      });
+
+      if(shown === 0){
+        const empty = document.createElement("div");
+        empty.style.color = "rgba(255,255,255,.7)";
+        empty.style.padding = "14px 6px";
+        empty.textContent = "No matches. Try a different search.";
+        listEl.appendChild(empty);
+      }
+    }
+
+    document.getElementById("expandAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = true);
+    });
+
+    document.getElementById("collapseAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = false);
+    });
+
+    qEl.addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
+```
