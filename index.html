@@ -3,169 +3,228 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-
-  
-  <title>Drive Library</title>
-  <div class="top-nav">
-  <a href="index.html">Page 1</a>
-  <a href="page_2.html">Page 2</a>
-  <a href="page_3.html">Page 3</a>
-</div>
+  <title>Library</title>
 
   <style>
     :root{
-      --bg:#0b0c10;
-      --panel:#12141b;
-      --ink:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.62);
-      --line:rgba(255,255,255,.10);
-      --accent:#7aa7ff;
+      --bg0:#07070b;
+      --bg1:#0b0c12;
+      --panel: rgba(255,255,255,.05);
+      --panel2: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.10);
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --accent:#a78bfa;
+      --accent2:#60a5fa;
+      --good: rgba(34,197,94,.85);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 18px;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(167,139,250,.22), transparent 60%),
+        radial-gradient(900px 520px at 105% 5%, rgba(96,165,250,.18), transparent 55%),
+        radial-gradient(700px 500px at 40% 120%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
+
+    .wrap{max-width:1120px; margin:0 auto; padding:28px 14px 44px}
+
     header{
-      padding: 18px 16px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(122,167,255,.10), transparent);
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--r);
+      overflow:hidden;
     }
-    h1{margin:0 0 6px 0; font-size:18px; letter-spacing:.2px}
-    .sub{color:var(--muted); font-size:13px; line-height:1.35}
-    .wrap{max-width:1100px; margin:0 auto; padding: 14px 12px 32px}
+
+    .head-inner{padding: 18px 16px 14px}
+    h1{margin:0; font-size:22px; letter-spacing:.3px; line-height:1.15}
+    .sub{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35}
+
+    .top-nav{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      padding: 12px 12px 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+    }
+    .top-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+      font-weight: 650;
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .top-nav a:hover{ border-color: rgba(167,139,250,.50) }
+    .top-nav a[aria-current="page"]{
+      border-color: rgba(96,165,250,.70);
+      box-shadow: 0 0 0 3px rgba(96,165,250,.18) inset;
+    }
+
     .toolbar{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
-      margin: 12px 4px 14px;
+      margin: 16px 2px 14px;
     }
     input[type="search"]{
       flex:1 1 260px;
-      background: var(--panel);
+      min-width: 220px;
+      padding:11px 14px;
+      border-radius: 999px;
       border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
       color: var(--ink);
-      border-radius: 10px;
-      padding: 10px 12px;
-      outline: none;
+      outline:none;
     }
+    input[type="search"]::placeholder{ color: rgba(255,255,255,.45) }
+    input[type="search"]:focus{ border-color: rgba(96,165,250,.55) }
+
     button{
-      background: var(--panel);
-      border: 1px solid var(--line);
-      color: var(--ink);
-      border-radius: 10px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
       padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
       cursor:pointer;
     }
-    button:hover{border-color: rgba(122,167,255,.45)}
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 10px;
-    }
+    button:hover{ border-color: rgba(167,139,250,.50) }
+
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px}
+
     .card{
       grid-column: span 12;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: var(--r);
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
       overflow:hidden;
     }
+
     details{width:100%}
     summary{
       list-style:none;
+      user-select:none;
       cursor:pointer;
-      padding: 12px 14px;
+      padding: 13px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      border-bottom: 1px solid var(--line);
-      user-select:none;
+      background: rgba(0,0,0,.14);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
     summary::-webkit-details-marker{display:none}
-    .left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
+
+    .left{display:flex; align-items:center; gap:10px; min-width:0}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(96,165,250,.70);
+      flex: 0 0 auto;
     }
     .pill{
-      font-size:12px;
-      padding: 3px 8px;
-      border: 1px solid var(--line);
+      font-size: 11px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      padding: 5px 10px;
       border-radius: 999px;
-      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
       flex: 0 0 auto;
     }
     .title{
-      font-weight:650;
+      font-weight: 750;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
       max-width: 72vw;
     }
     .chev{
-      color: var(--muted);
-      flex: 0 0 auto;
       font-size: 12px;
+      color: rgba(255,255,255,.55);
+      flex: 0 0 auto;
     }
-    details[open] .chev{color: var(--accent)}
-    .content{
-      padding: 12px 14px 14px;
-    }
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom: 10px;
-    }
+    details[open] .chev{ color: var(--accent2) }
+
+    .content{padding: 12px 14px 14px; background: rgba(0,0,0,.08)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px}
     a.link{
-      display:inline-block;
-      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
       color: var(--ink);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding: 9px 10px;
-      border-radius: 10px;
+      text-decoration:none;
     }
-    a.link:hover{border-color: rgba(122,167,255,.45)}
+    a.link:hover{ border-color: rgba(167,139,250,.50) }
+
     iframe{
       width:100%;
-      height: 72vh;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background:#0f1117;
+      height: 74vh;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
     }
+
     .hint{
-      color: var(--muted);
-      font-size:12px;
       margin-top: 10px;
-      line-height:1.35;
+      font-size: 12px;
+      color: rgba(255,255,255,.58);
+      line-height: 1.35;
     }
 
     @media (min-width: 920px){
-      .card{grid-column: span 12;}
-      .title{max-width: 880px;}
+      .title{max-width: 900px;}
     }
   </style>
 </head>
-<body>
-  <header>
-    <div class="wrap" style="padding:0 12px;">
-      <h1>Drive Library</h1>
-      <div class="sub">
-        First 4 items start expanded. Everything is collapsible. Search filters titles/IDs.
-      </div>
-    </div>
-  </header>
 
+<body>
   <div class="wrap">
+    <header>
+      <div class="head-inner">
+        <h1>Library</h1>
+        <div class="sub">Page 1 • First 4 items start expanded. Everything is collapsible. Search filters titles/IDs.</div>
+      </div>
+
+      <nav class="top-nav" aria-label="Pages">
+        <a href="index.html" aria-current="page">Page 1</a>
+        <a href="page_2.html">Page 2</a>
+        <a href="page_3.html">Page 3</a>
+        <a href="page_4.html">Page 4</a>
+        <a href="page_5.html">Page 5</a>
+        <a href="page_6.html">Page 6</a>
+        <a href="page_7.html">Page 7</a>
+      </nav>
+    </header>
+
     <div class="toolbar">
-      <input id="q" type="search" placeholder="Search (e.g., part of an ID like 1WEotl...)" autocomplete="off" />
+      <input id="q" type="search" placeholder="Search PDFs (type part of an ID, or the label)" autocomplete="off" />
       <button id="expandAll" type="button">Expand all</button>
       <button id="collapseAll" type="button">Collapse all</button>
     </div>
@@ -174,117 +233,111 @@
   </div>
 
   <script>
-    // Paste / edit labels if you want nicer names.
-    // For Google Drive FILES we embed with /preview.
-    // For FOLDERS, Drive doesn't reliably iframe-embed publicly; we show open link + a note.
+    // UI language is "PDF" / "Collection" only.
+    // (Under the hood we still use the same preview/view URLs.)
     const items = [
-      { type: "file",   id: "15jnpLH9806qhWb7T_2F4DBScUgXbwqLT", label: "Item 1 (15jnpLH...)" },
-      { type: "folder", id: "1j7gen_iN6CjLKheRcr6Y4vwN6oqAkn7i", label: "Folder (1j7gen...)" },
-      { type: "file",   id: "1WEotlYHRk7Vcn1zCKebKQciZV6YT8Hx4", label: "Item 2 (1WEotl...)" },
-      { type: "file",   id: "19aTyfLIom6jOAOvqB0nOgEBgEK4bWhXf", label: "Item 3 (19aTyf...)" },
+      { kind:"pdf",        id:"15jnpLH9806qhWb7T_2F4DBScUgXbwqLT", label:"PDF 001" },
+      { kind:"collection", id:"1j7gen_iN6CjLKheRcr6Y4vwN6oqAkn7i", label:"Collection 001" },
+      { kind:"pdf",        id:"1WEotlYHRk7Vcn1zCKebKQciZV6YT8Hx4", label:"PDF 002" },
+      { kind:"pdf",        id:"19aTyfLIom6jOAOvqB0nOgEBgEK4bWhXf", label:"PDF 003" },
 
-      { type: "file", id: "1F7N6Od7u25FkJTLUOx2qejG9X6c0QlnZ", label: "Item 4 (1F7N6O...)" },
-      { type: "file", id: "1GbKDRNV7vBIZjH2X1Q6cQAnAam2XyWYn", label: "Item 5 (1GbKDR...)" },
-      { type: "file", id: "1369u_M8_mnM0dflT6G75S9N5ysHcwN_z", label: "Item 6 (1369u_...)" },
-      { type: "file", id: "1tx7-DgxjTnUN8kNkK6xK47HRRhAh8wwW", label: "Item 7 (1tx7-D...)" },
-      { type: "file", id: "1SHHViN0mgM0NsszXlFej3Ug7NdgjRHGE", label: "Item 8 (1SHHVi...)" },
-      { type: "file", id: "1gtqRFAmTbpf1N_sEHu-DBL4ObPUKwIRP", label: "Item 9 (1gtqRF...)" },
-      { type: "file", id: "1mT0WfeKll7EeC79THK0-HcOA8D8X6ZaX", label: "Item 10 (1mT0Wf...)" },
-      { type: "file", id: "1TE0qwGDSWe-k02a4tDLW6_C-fent3dYX", label: "Item 11 (1TE0qw...)" },
-      { type: "file", id: "1D7UGbYN4tNSD-XtrkvMUYDD2lH5jTd9O", label: "Item 12 (1D7UGb...)" },
-      { type: "file", id: "1ZLa1HyBMASBRfzP2gZZSWHD_7QFO0Wxj", label: "Item 13 (1ZLa1H...)" },
-      { type: "file", id: "1af85x1ZUrc-OY099ytlfw89zUrqlrYhY", label: "Item 14 (1af85x...)" },
-      { type: "file", id: "1amcfT7IJcIBtRsLC4QqNwAjJGjgM1P0J", label: "Item 15 (1amcfT...)" },
-      { type: "file", id: "1i5Q70dcGbiy_AiXuVQuH1xcfdhqrjKiC", label: "Item 16 (1i5Q70...)" },
-      { type: "file", id: "1mOc2nnUO4d0Q-QyR3heJBOPgr3whOnC5", label: "Item 17 (1mOc2n...)" },
-      { type: "file", id: "15H1rTOSIoVdPL_kpTDZWR4G8xGw_iqWz", label: "Item 18 (15H1rT...)" },
-      { type: "file", id: "1C6xKjkiEyU81w1QwyroS4hEHbwgQeZ-e", label: "Item 19 (1C6xKj...)" },
-      { type: "file", id: "1z3kSxrAUAAI3z8weSfwXCMJAtI4pQ32N", label: "Item 20 (1z3kSx...)" },
-      { type: "file", id: "1bDIz_NqQLUvQn3OONH_ljNgns8MWN3L9", label: "Item 21 (1bDIz_...)" },
-      { type: "file", id: "1k4Ss82ya5vtUC-xlfNKhooQhW4KWMujJ", label: "Item 22 (1k4Ss8...)" },
-      { type: "file", id: "1jHwvigrH57ApFCsPXnB_sxm7Sv4p_JBN", label: "Item 23 (1jHwvi...)" },
-      { type: "file", id: "1a1b-LNcZgzdurTeHaeI7koNK3nm4d0IW", label: "Item 24 (1a1b-L...)" },
-      { type: "file", id: "15-9shx1KKNgiklQ_OFV1g6ToHG6VgBJ3", label: "Item 25 (15-9sh...)" },
-      { type: "file", id: "1K8mighUKHISSnicCNDapr3y3kRfe9j3Z", label: "Item 26 (1K8mig...)" },
-      { type: "file", id: "13fUMk-FGNutUSb7wVrakV5qv5Yy3L348", label: "Item 27 (13fUMk...)" },
-      { type: "file", id: "1nPdwXTNFQ-vVWlAfaMH9Wce_gbb6E0DT", label: "Item 28 (1nPdwX...)" },
-      { type: "file", id: "1f9DU3ToS3r-hnJ1q0iVn129poFozmceG", label: "Item 29 (1f9DU3...)" },
-      { type: "file", id: "1fGWc-ioYe7T-r6GmjJTKE3cUdD1sxpRP", label: "Item 30 (1fGWc-...)" },
-      { type: "file", id: "112WpVLn1oJMZbzK-Q6BHG8FcGe_GSxd4", label: "Item 31 (112WpV...)" },
-      { type: "file", id: "1xoYMpkeCIMQYeoC9lZPmhTatwKAzAoaP", label: "Item 32 (1xoYMp...)" },
-      { type: "file", id: "1vdi2uXBiDavskKGMij8FAnzcJegAdO1v", label: "Item 33 (1vdi2u...)" },
-      { type: "file", id: "1cocKJuW6QCcI_3sCelXr2KiUSGdRcK94", label: "Item 34 (1cocKJ...)" },
-      { type: "file", id: "1YQCJkEYfjAc1QlNZG80zsRCzCwA5o7rc", label: "Item 35 (1YQCJk...)" },
-      { type: "file", id: "1v_qeSf82PnhjOZGMVIEcEL0u3c6hHEM6", label: "Item 36 (1v_qeS...)" },
-      { type: "file", id: "1cyBdeIn_rh88CiqdTIFik1XReBUMHk4b", label: "Item 37 (1cyBde...)" },
-      { type: "file", id: "1pVkRkkzgmw92B-J0FrWrliNEYJbKisNR", label: "Item 38 (1pVkRk...)" },
-      { type: "file", id: "1ex6hnGLA-FysmPwpa1JoaSCBdewOuTy8", label: "Item 39 (1ex6hn...)" },
-      { type: "file", id: "1hZ4O6_HGdZ4zpz7GA4h75S4ACco4oare", label: "Item 40 (1hZ4O6...)" },
-      { type: "file", id: "1IfF2LgtziOHocvUwbD4YVNzRiXIahVJ7", label: "Item 41 (1IfF2L...)" },
-      { type: "file", id: "1lc9cqIdStvEux9Zo4TDcHZrq-GLwMAe2", label: "Item 42 (1lc9cq...)" },
-      { type: "file", id: "1vNXoUvZ6G3mvPLkqg_UdAdMCFBwCXoa7", label: "Item 43 (1vNXoU...)" },
-      { type: "file", id: "1oWuvuJzhwEWKqdrm2DMwoBc5VwbD9mRr", label: "Item 44 (1oWuvu...)" },
-      { type: "file", id: "1FMU580_fOrWTXSAqvIy0PzQXr9_Z3-sc", label: "Item 45 (1FMU58...)" },
-      { type: "file", id: "1yiJtoBluTF2nORjGZoxbtawn4KuHefOw", label: "Item 46 (1yiJto...)" },
-      { type: "file", id: "14UydhFVy7qX9-iwDIQE4PFANvAd9pLnT", label: "Item 47 (14Uydh...)" },
-      { type: "file", id: "150b96HQW1p1Qhi_LAke0J3N8i2skSUHy", label: "Item 48 (150b96...)" },
-      { type: "file", id: "1PIB6Y7k-BjO1D5_bduAx5FEsvkxQ4je5", label: "Item 49 (1PIB6Y...)" },
-      { type: "file", id: "1lk1fQ8zVapKi7KzcEQLpUU9HgoQYiu5s", label: "Item 50 (1lk1fQ...)" },
-      { type: "file", id: "1SBbCNhFNLfzdzsSa_tdiiUnypxQGg9l1", label: "Item 51 (1SBbCN...)" },
-      { type: "file", id: "1t9ss_X6Gwjnc0MY_04pM7WHQ776abxZy", label: "Item 52 (1t9ss_...)" },
-      { type: "file", id: "1eMCSuu5hXmqqIWCR82AbZyY0eZ2am-GR", label: "Item 53 (1eMCSu...)" },
-      { type: "file", id: "1pXW6xXqCQaJhgBEV8kCzXZU4v9sGgYp6", label: "Item 54 (1pXW6x...)" },
-      { type: "file", id: "1I8OiwwmktXdC-sDG-qHbtG4KXe4QhBnm", label: "Item 55 (1I8Oiw...)" },
-      { type: "file", id: "1fhVJz8GPBdBqjkZ-s5tYhB0ajPFbOuNk", label: "Item 56 (1fhVJz...)" },
-      { type: "file", id: "1xW3SKYZPOdF8y1bxWBMsKPf-9sMv5_IB", label: "Item 57 (1xW3SK...)" },
-      { type: "file", id: "1I3Ch_aP3fKoJUzeQCBAkA71PWBi46sWo", label: "Item 58 (1I3Ch_...)" },
-      { type: "file", id: "1a3cOcYhH6VyT45_85zW4NgBjed1MzNIx", label: "Item 59 (1a3cOc...)" },
-      { type: "file", id: "14I6OvCdI1Sh4J6VF7SRnEK_1Je9q5tiN", label: "Item 60 (14I6Ov...)" },
-      { type: "file", id: "1HsjCvpQsmLFalGEZFdnRFLZ6C9pRrkss", label: "Item 61 (1HsjCv...)" },
-      { type: "file", id: "1XVs0ZDHZUUC_8Xf4dqWEZIPWWi1W9oOI", label: "Item 62 (1XVs0Z...)" },
-      { type: "file", id: "1pZLXd4d3Pp2wk63dKpEaYBgb8xfXEi_9", label: "Item 63 (1pZLXd...)" },
-      { type: "file", id: "1BpqByyfLPP0_4wapySP8VuzVCQTTpT8G", label: "Item 64 (1BpqBy...)" },
-      { type: "file", id: "19pQq77pAYcPs2i_I8BagsSZElCVoVG12", label: "Item 65 (19pQq7...)" },
-      { type: "file", id: "1LL9acMmqTaTfquon7r-ixPPwSQObArvJ", label: "Item 66 (1LL9ac...)" },
-      { type: "file", id: "1UIOlIlLGaA7yFqMLiROdUKwYT1cxlL4g", label: "Item 67 (1UIOlI...)" },
-      { type: "file", id: "1_K8fLqIoOJC60-69SAo1bdaR051FodM9", label: "Item 68 (1_K8fL...)" },
-      { type: "file", id: "1UXpEvuOTJW-jzGgaQey8AQMihW3vuxdC", label: "Item 69 (1UXpEv...)" },
-      { type: "file", id: "1mHfscEAgQRYs1e9f1srcdwRFn_Ohc12R", label: "Item 70 (1mHfsc...)" },
-      { type: "file", id: "1r9VDXlzUwk8Q0D2AjxGs-MjvYVmEVv6x", label: "Item 71 (1r9VDX...)" },
-      { type: "file", id: "1so2_ZH6GIflLkjGTE1rnE3WbwbzJM_FB", label: "Item 72 (1so2_Z...)" },
-      { type: "file", id: "1qke7x1v7_z9xscV7Awy7A1GFYLReHVSz", label: "Item 73 (1qke7x...)" },
-      { type: "file", id: "1jlmvOmxRBoCZEjiW8QnkXN8sx7B3fqAg", label: "Item 74 (1jlmvO...)" },
-      { type: "file", id: "1V60_xEpUrrJ-WbTKTd4AfFaazJLD2Hfa", label: "Item 75 (1V60_x...)" },
-      { type: "file", id: "1IWy_5d449BMTKsi_pMVCwLku8xZ_xDjV", label: "Item 76 (1IWy_5...)" },
-      { type: "file", id: "1v1G0piVPGPK1T8-F4wlThaDDVa6P4K5_", label: "Item 77 (1v1G0p...)" },
-      { type: "file", id: "1ejAoN1MN-YVi8V0SAAIVuJOFYsJtm3m2", label: "Item 78 (1ejAoN...)" },
-      { type: "file", id: "1NtPacj3nyJgR0aI08bpVq22gXJ0HeNl3", label: "Item 79 (1NtPac...)" },
-      { type: "file", id: "1GIl9maCrhsK_imIKgNS3mrfNpahlytWh", label: "Item 80 (1GIl9m...)" },
-      { type: "file", id: "1zA83iSv5Xm5zRvSxUxnlRq_LuDpySgbA", label: "Item 81 (1zA83i...)" },
-      { type: "file", id: "1oZp9QNS_fQ9iaVxPWtexpbOfNT645FfU", label: "Item 82 (1oZp9Q...)" },
-      { type: "file", id: "1R6ESfmeSjrYFFQ20B61gEYm0pGdmdUUP", label: "Item 83 (1R6ESf...)" },
-      { type: "file", id: "1by4s9msksU22NvwLF3So8a1CLQ6181uX", label: "Item 84 (1by4s9...)" },
-      { type: "file", id: "1m9HaDRXWTSRI6ApOHpsr5AtA184VU8E_", label: "Item 85 (1m9HaD...)" },
-      { type: "file", id: "1TVkRJ1Gl2nHGSJQSwAkWkLpvpnKkO7z3", label: "Item 86 (1TVkRJ...)" },
+      { kind:"pdf", id:"1F7N6Od7u25FkJTLUOx2qejG9X6c0QlnZ", label:"PDF 004" },
+      { kind:"pdf", id:"1GbKDRNV7vBIZjH2X1Q6cQAnAam2XyWYn", label:"PDF 005" },
+      { kind:"pdf", id:"1369u_M8_mnM0dflT6G75S9N5ysHcwN_z", label:"PDF 006" },
+      { kind:"pdf", id:"1tx7-DgxjTnUN8kNkK6xK47HRRhAh8wwW", label:"PDF 007" },
+      { kind:"pdf", id:"1SHHViN0mgM0NsszXlFej3Ug7NdgjRHGE", label:"PDF 008" },
+      { kind:"pdf", id:"1gtqRFAmTbpf1N_sEHu-DBL4ObPUKwIRP", label:"PDF 009" },
+      { kind:"pdf", id:"1mT0WfeKll7EeC79THK0-HcOA8D8X6ZaX", label:"PDF 010" },
+      { kind:"pdf", id:"1TE0qwGDSWe-k02a4tDLW6_C-fent3dYX", label:"PDF 011" },
+      { kind:"pdf", id:"1D7UGbYN4tNSD-XtrkvMUYDD2lH5jTd9O", label:"PDF 012" },
+      { kind:"pdf", id:"1ZLa1HyBMASBRfzP2gZZSWHD_7QFO0Wxj", label:"PDF 013" },
+      { kind:"pdf", id:"1af85x1ZUrc-OY099ytlfw89zUrqlrYhY", label:"PDF 014" },
+      { kind:"pdf", id:"1amcfT7IJcIBtRsLC4QqNwAjJGjgM1P0J", label:"PDF 015" },
+      { kind:"pdf", id:"1i5Q70dcGbiy_AiXuVQuH1xcfdhqrjKiC", label:"PDF 016" },
+      { kind:"pdf", id:"1mOc2nnUO4d0Q-QyR3heJBOPgr3whOnC5", label:"PDF 017" },
+      { kind:"pdf", id:"15H1rTOSIoVdPL_kpTDZWR4G8xGw_iqWz", label:"PDF 018" },
+      { kind:"pdf", id:"1C6xKjkiEyU81w1QwyroS4hEHbwgQeZ-e", label:"PDF 019" },
+      { kind:"pdf", id:"1z3kSxrAUAAI3z8weSfwXCMJAtI4pQ32N", label:"PDF 020" },
+      { kind:"pdf", id:"1bDIz_NqQLUvQn3OONH_ljNgns8MWN3L9", label:"PDF 021" },
+      { kind:"pdf", id:"1k4Ss82ya5vtUC-xlfNKhooQhW4KWMujJ", label:"PDF 022" },
+      { kind:"pdf", id:"1jHwvigrH57ApFCsPXnB_sxm7Sv4p_JBN", label:"PDF 023" },
+      { kind:"pdf", id:"1a1b-LNcZgzdurTeHaeI7koNK3nm4d0IW", label:"PDF 024" },
+      { kind:"pdf", id:"15-9shx1KKNgiklQ_OFV1g6ToHG6VgBJ3", label:"PDF 025" },
+      { kind:"pdf", id:"1K8mighUKHISSnicCNDapr3y3kRfe9j3Z", label:"PDF 026" },
+      { kind:"pdf", id:"13fUMk-FGNutUSb7wVrakV5qv5Yy3L348", label:"PDF 027" },
+      { kind:"pdf", id:"1nPdwXTNFQ-vVWlAfaMH9Wce_gbb6E0DT", label:"PDF 028" },
+      { kind:"pdf", id:"1f9DU3ToS3r-hnJ1q0iVn129poFozmceG", label:"PDF 029" },
+      { kind:"pdf", id:"1fGWc-ioYe7T-r6GmjJTKE3cUdD1sxpRP", label:"PDF 030" },
+      { kind:"pdf", id:"112WpVLn1oJMZbzK-Q6BHG8FcGe_GSxd4", label:"PDF 031" },
+      { kind:"pdf", id:"1xoYMpkeCIMQYeoC9lZPmhTatwKAzAoaP", label:"PDF 032" },
+      { kind:"pdf", id:"1vdi2uXBiDavskKGMij8FAnzcJegAdO1v", label:"PDF 033" },
+      { kind:"pdf", id:"1cocKJuW6QCcI_3sCelXr2KiUSGdRcK94", label:"PDF 034" },
+      { kind:"pdf", id:"1YQCJkEYfjAc1QlNZG80zsRCzCwA5o7rc", label:"PDF 035" },
+      { kind:"pdf", id:"1v_qeSf82PnhjOZGMVIEcEL0u3c6hHEM6", label:"PDF 036" },
+      { kind:"pdf", id:"1cyBdeIn_rh88CiqdTIFik1XReBUMHk4b", label:"PDF 037" },
+      { kind:"pdf", id:"1pVkRkkzgmw92B-J0FrWrliNEYJbKisNR", label:"PDF 038" },
+      { kind:"pdf", id:"1ex6hnGLA-FysmPwpa1JoaSCBdewOuTy8", label:"PDF 039" },
+      { kind:"pdf", id:"1hZ4O6_HGdZ4zpz7GA4h75S4ACco4oare", label:"PDF 040" },
+      { kind:"pdf", id:"1IfF2LgtziOHocvUwbD4YVNzRiXIahVJ7", label:"PDF 041" },
+      { kind:"pdf", id:"1lc9cqIdStvEux9Zo4TDcHZrq-GLwMAe2", label:"PDF 042" },
+      { kind:"pdf", id:"1vNXoUvZ6G3mvPLkqg_UdAdMCFBwCXoa7", label:"PDF 043" },
+      { kind:"pdf", id:"1oWuvuJzhwEWKqdrm2DMwoBc5VwbD9mRr", label:"PDF 044" },
+      { kind:"pdf", id:"1FMU580_fOrWTXSAqvIy0PzQXr9_Z3-sc", label:"PDF 045" },
+      { kind:"pdf", id:"1yiJtoBluTF2nORjGZoxbtawn4KuHefOw", label:"PDF 046" },
+      { kind:"pdf", id:"14UydhFVy7qX9-iwDIQE4PFANvAd9pLnT", label:"PDF 047" },
+      { kind:"pdf", id:"150b96HQW1p1Qhi_LAke0J3N8i2skSUHy", label:"PDF 048" },
+      { kind:"pdf", id:"1PIB6Y7k-BjO1D5_bduAx5FEsvkxQ4je5", label:"PDF 049" },
+      { kind:"pdf", id:"1lk1fQ8zVapKi7KzcEQLpUU9HgoQYiu5s", label:"PDF 050" },
+      { kind:"pdf", id:"1SBbCNhFNLfzdzsSa_tdiiUnypxQGg9l1", label:"PDF 051" },
+      { kind:"pdf", id:"1t9ss_X6Gwjnc0MY_04pM7WHQ776abxZy", label:"PDF 052" },
+      { kind:"pdf", id:"1eMCSuu5hXmqqIWCR82AbZyY0eZ2am-GR", label:"PDF 053" },
+      { kind:"pdf", id:"1pXW6xXqCQaJhgBEV8kCzXZU4v9sGgYp6", label:"PDF 054" },
+      { kind:"pdf", id:"1I8OiwwmktXdC-sDG-qHbtG4KXe4QhBnm", label:"PDF 055" },
+      { kind:"pdf", id:"1fhVJz8GPBdBqjkZ-s5tYhB0ajPFbOuNk", label:"PDF 056" },
+      { kind:"pdf", id:"1xW3SKYZPOdF8y1bxWBMsKPf-9sMv5_IB", label:"PDF 057" },
+      { kind:"pdf", id:"1I3Ch_aP3fKoJUzeQCBAkA71PWBi46sWo", label:"PDF 058" },
+      { kind:"pdf", id:"1a3cOcYhH6VyT45_85zW4NgBjed1MzNIx", label:"PDF 059" },
+      { kind:"pdf", id:"14I6OvCdI1Sh4J6VF7SRnEK_1Je9q5tiN", label:"PDF 060" },
+      { kind:"pdf", id:"1HsjCvpQsmLFalGEZFdnRFLZ6C9pRrkss", label:"PDF 061" },
+      { kind:"pdf", id:"1XVs0ZDHZUUC_8Xf4dqWEZIPWWi1W9oOI", label:"PDF 062" },
+      { kind:"pdf", id:"1pZLXd4d3Pp2wk63dKpEaYBgb8xfXEi_9", label:"PDF 063" },
+      { kind:"pdf", id:"1BpqByyfLPP0_4wapySP8VuzVCQTTpT8G", label:"PDF 064" },
+      { kind:"pdf", id:"19pQq77pAYcPs2i_I8BagsSZElCVoVG12", label:"PDF 065" },
+      { kind:"pdf", id:"1LL9acMmqTaTfquon7r-ixPPwSQObArvJ", label:"PDF 066" },
+      { kind:"pdf", id:"1UIOlIlLGaA7yFqMLiROdUKwYT1cxlL4g", label:"PDF 067" },
+      { kind:"pdf", id:"1_K8fLqIoOJC60-69SAo1bdaR051FodM9", label:"PDF 068" },
+      { kind:"pdf", id:"1UXpEvuOTJW-jzGgaQey8AQMihW3vuxdC", label:"PDF 069" },
+      { kind:"pdf", id:"1mHfscEAgQRYs1e9f1srcdwRFn_Ohc12R", label:"PDF 070" },
+      { kind:"pdf", id:"1r9VDXlzUwk8Q0D2AjxGs-MjvYVmEVv6x", label:"PDF 071" },
+      { kind:"pdf", id:"1so2_ZH6GIflLkjGTE1rnE3WbwbzJM_FB", label:"PDF 072" },
+      { kind:"pdf", id:"1qke7x1v7_z9xscV7Awy7A1GFYLReHVSz", label:"PDF 073" },
+      { kind:"pdf", id:"1jlmvOmxRBoCZEjiW8QnkXN8sx7B3fqAg", label:"PDF 074" },
+      { kind:"pdf", id:"1V60_xEpUrrJ-WbTKTd4AfFaazJLD2Hfa", label:"PDF 075" },
+      { kind:"pdf", id:"1IWy_5d449BMTKsi_pMVCwLku8xZ_xDjV", label:"PDF 076" },
+      { kind:"pdf", id:"1v1G0piVPGPK1T8-F4wlThaDDVa6P4K5_", label:"PDF 077" },
+      { kind:"pdf", id:"1ejAoN1MN-YVi8V0SAAIVuJOFYsJtm3m2", label:"PDF 078" },
+      { kind:"pdf", id:"1NtPacj3nyJgR0aI08bpVq22gXJ0HeNl3", label:"PDF 079" },
+      { kind:"pdf", id:"1GIl9maCrhsK_imIKgNS3mrfNpahlytWh", label:"PDF 080" },
+      { kind:"pdf", id:"1zA83iSv5Xm5zRvSxUxnlRq_LuDpySgbA", label:"PDF 081" },
+      { kind:"pdf", id:"1oZp9QNS_fQ9iaVxPWtexpbOfNT645FfU", label:"PDF 082" },
+      { kind:"pdf", id:"1R6ESfmeSjrYFFQ20B61gEYm0pGdmdUUP", label:"PDF 083" },
+      { kind:"pdf", id:"1by4s9msksU22NvwLF3So8a1CLQ6181uX", label:"PDF 084" },
+      { kind:"pdf", id:"1m9HaDRXWTSRI6ApOHpsr5AtA184VU8E_", label:"PDF 085" },
+      { kind:"pdf", id:"1TVkRJ1Gl2nHGSJQSwAkWkLpvpnKkO7z3", label:"PDF 086" },
     ];
 
     const listEl = document.getElementById("list");
     const qEl = document.getElementById("q");
 
-    function driveViewUrl(item){
-      if(item.type === "folder"){
+    function openUrl(item){
+      if(item.kind === "collection"){
         return `https://drive.google.com/drive/folders/${item.id}`;
       }
       return `https://drive.google.com/file/d/${item.id}/view`;
     }
 
-    function drivePreviewUrl(item){
+    function previewUrl(item){
       return `https://drive.google.com/file/d/${item.id}/preview`;
-    }
-
-    function driveDownloadUrl(item){
-      // Works for many public files; if Drive blocks direct download, the View link still works.
-      return `https://drive.google.com/uc?export=download&id=${item.id}`;
     }
 
     function render(){
@@ -294,7 +347,7 @@
       let shown = 0;
 
       items.forEach((item, idx) => {
-        const hay = `${item.label} ${item.id} ${item.type}`.toLowerCase();
+        const hay = `${item.label} ${item.id} ${item.kind}`.toLowerCase();
         if(q && !hay.includes(q)) return;
 
         shown++;
@@ -303,7 +356,6 @@
         card.className = "card";
 
         const details = document.createElement("details");
-        // First 4 overall items visible/expanded by default (based on original order, not filtered)
         if(idx < 4) details.open = true;
 
         const summary = document.createElement("summary");
@@ -311,25 +363,28 @@
         const left = document.createElement("div");
         left.className = "left";
 
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.style.background = item.kind === "collection" ? "rgba(167,139,250,.70)" : "rgba(96,165,250,.70)";
+
         const pill = document.createElement("span");
         pill.className = "pill";
-        pill.textContent = item.type.toUpperCase();
+        pill.textContent = item.kind === "collection" ? "COLLECTION" : "PDF";
 
         const title = document.createElement("div");
         title.className = "title";
         title.textContent = item.label;
 
+        left.appendChild(dot);
         left.appendChild(pill);
         left.appendChild(title);
 
         const chev = document.createElement("div");
         chev.className = "chev";
-        chev.textContent = "Click to expand ▸";
+        chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
 
         summary.appendChild(left);
         summary.appendChild(chev);
-
-        details.appendChild(summary);
 
         const content = document.createElement("div");
         content.className = "content";
@@ -339,52 +394,40 @@
 
         const aOpen = document.createElement("a");
         aOpen.className = "link";
-        aOpen.href = driveViewUrl(item);
+        aOpen.href = openUrl(item);
         aOpen.target = "_blank";
         aOpen.rel = "noopener noreferrer";
-        aOpen.textContent = item.type === "folder" ? "Open folder" : "Open file";
-
+        aOpen.innerHTML = `<span class="dot" style="background:${getComputedStyle(dot).backgroundColor.replace('rgb','rgba').replace(')',',.70)')}"></span> Open`;
         actions.appendChild(aOpen);
-
-        if(item.type === "file"){
-          const aDl = document.createElement("a");
-          aDl.className = "link";
-          aDl.href = driveDownloadUrl(item);
-          aDl.target = "_blank";
-          aDl.rel = "noopener noreferrer";
-          aDl.textContent = "Download (if allowed)";
-          actions.appendChild(aDl);
-        }
 
         content.appendChild(actions);
 
-        if(item.type === "file"){
+        if(item.kind === "pdf"){
           const iframe = document.createElement("iframe");
           iframe.loading = "lazy";
           iframe.allow = "autoplay";
-          iframe.src = drivePreviewUrl(item);
+          iframe.src = previewUrl(item);
           content.appendChild(iframe);
 
           const hint = document.createElement("div");
           hint.className = "hint";
-          hint.textContent = "If the embed shows a permission error: set the file to “Anyone with the link can view” in Drive.";
+          hint.textContent = "If it doesn’t load, the file probably isn’t shared for link viewing.";
           content.appendChild(hint);
         } else {
           const hint = document.createElement("div");
           hint.className = "hint";
-          hint.textContent = "Folders don’t reliably embed in an iframe. Use “Open folder” to browse.";
+          hint.textContent = "Collections open in a new tab for browsing.";
           content.appendChild(hint);
         }
 
+        details.appendChild(summary);
         details.appendChild(content);
         card.appendChild(details);
         listEl.appendChild(card);
 
         details.addEventListener("toggle", () => {
-          chev.textContent = details.open ? "Collapse ▾" : "Click to expand ▸";
+          chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
         });
-        // initialize chevron state
-        chev.textContent = details.open ? "Collapse ▾" : "Click to expand ▸";
       });
 
       if(shown === 0){
@@ -405,7 +448,6 @@
     });
 
     qEl.addEventListener("input", render);
-
     render();
   </script>
 </body>
