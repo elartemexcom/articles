@@ -1,0 +1,395 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library — Page 4</title>
+
+  <style>
+    :root{
+      --bg0:#07070b;
+      --bg1:#0b0c12;
+      --panel: rgba(255,255,255,.05);
+      --line: rgba(255,255,255,.10);
+      --ink: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --accent:#a78bfa;
+      --accent2:#60a5fa;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(167,139,250,.22), transparent 60%),
+        radial-gradient(900px 520px at 105% 5%, rgba(96,165,250,.18), transparent 55%),
+        radial-gradient(700px 500px at 40% 120%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    .wrap{max-width:1120px; margin:0 auto; padding:28px 14px 44px}
+
+    header{
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--r);
+      overflow:hidden;
+    }
+
+    .head-inner{padding: 18px 16px 14px}
+    h1{margin:0; font-size:22px; letter-spacing:.3px; line-height:1.15}
+    .sub{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35}
+
+    .top-nav{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      padding: 12px 12px 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+    }
+    .top-nav a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+      font-weight: 650;
+      font-size: 13px;
+      letter-spacing: .2px;
+    }
+    .top-nav a:hover{ border-color: rgba(167,139,250,.50) }
+    .top-nav a[aria-current="page"]{
+      border-color: rgba(96,165,250,.70);
+      box-shadow: 0 0 0 3px rgba(96,165,250,.18) inset;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin: 16px 2px 14px;
+    }
+    input[type="search"]{
+      flex:1 1 260px;
+      min-width: 220px;
+      padding:11px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+      outline:none;
+    }
+    input[type="search"]::placeholder{ color: rgba(255,255,255,.45) }
+    input[type="search"]:focus{ border-color: rgba(96,165,250,.55) }
+
+    button{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      cursor:pointer;
+    }
+    button:hover{ border-color: rgba(167,139,250,.50) }
+
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px}
+
+    .card{
+      grid-column: span 12;
+      border-radius: var(--r);
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    details{width:100%}
+    summary{
+      list-style:none;
+      user-select:none;
+      cursor:pointer;
+      padding: 13px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: rgba(0,0,0,.14);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    summary::-webkit-details-marker{display:none}
+
+    .left{display:flex; align-items:center; gap:10px; min-width:0}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(96,165,250,.70);
+      flex: 0 0 auto;
+    }
+    .pill{
+      font-size: 11px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
+      flex: 0 0 auto;
+    }
+    .title{
+      font-weight: 750;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 72vw;
+    }
+    .chev{
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      flex: 0 0 auto;
+    }
+    details[open] .chev{ color: var(--accent2) }
+
+    .content{padding: 12px 14px 14px; background: rgba(0,0,0,.08)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+    a.link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--ink);
+      text-decoration:none;
+    }
+    a.link:hover{ border-color: rgba(167,139,250,.50) }
+
+    iframe{
+      width:100%;
+      height: 74vh;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.58);
+      line-height: 1.35;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="head-inner">
+        <h1>Library</h1>
+        <div class="sub">Page 4 • First 4 items start expanded. Everything is collapsible. Search filters titles/IDs.</div>
+      </div>
+
+      <nav class="top-nav" aria-label="Pages">
+        <a href="index.html">Page 1</a>
+        <a href="page_2.html">Page 2</a>
+        <a href="page_3.html">Page 3</a>
+        <a href="page_4.html" aria-current="page">Page 4</a>
+        <a href="page_5.html">Page 5</a>
+        <a href="page_6.html">Page 6</a>
+        <a href="page_7.html">Page 7</a>
+      </nav>
+    </header>
+
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Search PDFs (type part of an ID, or the label)" autocomplete="off" />
+      <button id="expandAll" type="button">Expand all</button>
+      <button id="collapseAll" type="button">Collapse all</button>
+    </div>
+
+    <div id="list" class="grid"></div>
+  </div>
+
+  <script>
+    const items = [
+      { kind:"pdf",        id:"1-YZh04gM3rzzXuWV3vdi1YFLMprQjR-i", label:"PDF 087" },
+      { kind:"pdf",        id:"11LjEZIfih6cOg7-S6C0rUwPVAJ9n1h65", label:"PDF 088" },
+      { kind:"pdf",        id:"11mgWo-tQNNOR6BMtM2CRTWNp-SQgSY5l", label:"PDF 089" },
+      { kind:"pdf",        id:"16NusrOw7AB-mU_jvCAMvoMquuWm3ENog", label:"PDF 090" },
+
+      { kind:"pdf",        id:"17wr56aEPaEyYPaVmpPotdfxDYzXbIL09", label:"PDF 091" },
+      { kind:"pdf",        id:"1Ah6pThQCP3Gx0bliwXeNEhsxyB69MN6m", label:"PDF 092" },
+      { kind:"pdf",        id:"1CaB0A69bkwwf5NlKaxFyZCSqYmvpjDsb", label:"PDF 093" },
+      { kind:"pdf",        id:"1Ev85FSd_xv88Py0ZpPNut4UQ49cG0sRI", label:"PDF 094" },
+      { kind:"pdf",        id:"1H6WC0rN0m6y2nD0znJ_7T2kPFmx4NFLE", label:"PDF 095" },
+      { kind:"pdf",        id:"1HDvTeANj6LUyufJE3-skRF9ZFmxGygB5", label:"PDF 096" },
+      { kind:"pdf",        id:"1HTairBQ_asEmocO9QpV_WnnStR7Mqf6x", label:"PDF 097" },
+      { kind:"pdf",        id:"1J8o4zjVAQb2qMj0pFcjFkJG1BwtaDE51", label:"PDF 098" },
+      { kind:"pdf",        id:"1Lk-aMVj_2e6IDEGRdtzfy3LMoEGtRGAN", label:"PDF 099" },
+      { kind:"pdf",        id:"1MLzstkWnwCCXGa8KURWJzNq2CSt4Nj3Q", label:"PDF 100" },
+      { kind:"pdf",        id:"1NKtF1wsgpz5uHM2G4ix0nJKxmjGl5hXv", label:"PDF 101" },
+      { kind:"pdf",        id:"1Q6hrboypcqPoDdx0tnlfaewnhMWtza-T", label:"PDF 102" },
+
+      { kind:"collection", id:"1QWquKTbmN7AfDiPKPkLYoT30HBCr9dTI", label:"Collection 002" },
+
+      { kind:"pdf",        id:"1QWs6xc2D5TSZmd-PQdUtVTMdKMFOKClc", label:"PDF 103" },
+      { kind:"pdf",        id:"1S-OhfcqaG0JmF9sY3FLfOg1mGyhcUc-p", label:"PDF 104" },
+      { kind:"pdf",        id:"1WO-XnLeW7YEewGlPRS1naRE90Gs1FwrO", label:"PDF 105" },
+      { kind:"pdf",        id:"1WlSUZqMqAyA2CW-yGOO4gwUUnZKkFCTq", label:"PDF 106" },
+      { kind:"pdf",        id:"1XFJThnpfGTDMrb5q9b5-RZnvbFlzPTyD", label:"PDF 107" },
+      { kind:"pdf",        id:"1_8pDvUNqSWcrm02oMFh-Jw0-NomXlFBW", label:"PDF 108" },
+      { kind:"pdf",        id:"1bLafo3iBYQAXiGW2M0Ds6mxoSgnxNvR7", label:"PDF 109" },
+      { kind:"pdf",        id:"1eU0Rtgq6ynnEedm6yhzFmhw_fezArM8s", label:"PDF 110" },
+      { kind:"pdf",        id:"1g1f90JYEQ4P5XUaZKhIQ-eWyfJTXfRvI", label:"PDF 111" },
+      { kind:"pdf",        id:"1gdHKWbBcM6Q6U9lk0ye837On9EA0ezHB", label:"PDF 112" },
+      { kind:"pdf",        id:"1innobE1C8q_qZl3lGZSWGLiH-0vpkFZm", label:"PDF 113" },
+      { kind:"pdf",        id:"1mV3ETv5qdm0yQu736qGFotgdAeOwX52a", label:"PDF 114" },
+      { kind:"pdf",        id:"1mxE0DGOGwuOGUUtCzz2yDvRHwLG1nyOT", label:"PDF 115" },
+      { kind:"pdf",        id:"1qwSDRGFA77DyETX5sC-tHQMvoiQr7wcA", label:"PDF 116" },
+      { kind:"pdf",        id:"1sRCm-ds3Ofon9S8p4l84JYm40IUW6CC6", label:"PDF 117" },
+    ];
+
+    const listEl = document.getElementById("list");
+    const qEl = document.getElementById("q");
+
+    function openUrl(item){
+      if(item.kind === "collection"){
+        return `https://drive.google.com/drive/folders/${item.id}`;
+      }
+      return `https://drive.google.com/file/d/${item.id}/view`;
+    }
+
+    function previewUrl(item){
+      return `https://drive.google.com/file/d/${item.id}/preview`;
+    }
+
+    function render(){
+      const q = (qEl.value || "").trim().toLowerCase();
+      listEl.innerHTML = "";
+
+      let shown = 0;
+
+      items.forEach((item, idx) => {
+        const hay = `${item.label} ${item.id} ${item.kind}`.toLowerCase();
+        if(q && !hay.includes(q)) return;
+
+        shown++;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const details = document.createElement("details");
+        if(idx < 4) details.open = true;
+
+        const summary = document.createElement("summary");
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.style.background = item.kind === "collection" ? "rgba(167,139,250,.70)" : "rgba(96,165,250,.70)";
+
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = item.kind === "collection" ? "COLLECTION" : "PDF";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = item.label;
+
+        left.appendChild(dot);
+        left.appendChild(pill);
+        left.appendChild(title);
+
+        const chev = document.createElement("div");
+        chev.className = "chev";
+        chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+
+        summary.appendChild(left);
+        summary.appendChild(chev);
+
+        const content = document.createElement("div");
+        content.className = "content";
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const aOpen = document.createElement("a");
+        aOpen.className = "link";
+        aOpen.href = openUrl(item);
+        aOpen.target = "_blank";
+        aOpen.rel = "noopener noreferrer";
+        aOpen.textContent = "Open";
+        actions.appendChild(aOpen);
+
+        content.appendChild(actions);
+
+        if(item.kind === "pdf"){
+          const iframe = document.createElement("iframe");
+          iframe.loading = "lazy";
+          iframe.allow = "autoplay";
+          iframe.src = previewUrl(item);
+          content.appendChild(iframe);
+
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "If it doesn’t load, the file probably isn’t shared for link viewing.";
+          content.appendChild(hint);
+        } else {
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "Collections open in a new tab for browsing.";
+          content.appendChild(hint);
+        }
+
+        details.appendChild(summary);
+        details.appendChild(content);
+        card.appendChild(details);
+        listEl.appendChild(card);
+
+        details.addEventListener("toggle", () => {
+          chev.textContent = details.open ? "Collapse ▾" : "Expand ▸";
+        });
+      });
+
+      if(shown === 0){
+        const empty = document.createElement("div");
+        empty.style.color = "rgba(255,255,255,.7)";
+        empty.style.padding = "14px 6px";
+        empty.textContent = "No matches. Try a different search.";
+        listEl.appendChild(empty);
+      }
+    }
+
+    document.getElementById("expandAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = true);
+    });
+
+    document.getElementById("collapseAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = false);
+    });
+
+    qEl.addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
+```
