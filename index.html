@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drive Library</title>
+
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --panel:#12141b;
+      --ink:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.62);
+      --line:rgba(255,255,255,.10);
+      --accent:#7aa7ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    header{
+      padding: 18px 16px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(122,167,255,.10), transparent);
+    }
+    h1{margin:0 0 6px 0; font-size:18px; letter-spacing:.2px}
+    .sub{color:var(--muted); font-size:13px; line-height:1.35}
+    .wrap{max-width:1100px; margin:0 auto; padding: 14px 12px 32px}
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin: 12px 4px 14px;
+    }
+    input[type="search"]{
+      flex:1 1 260px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+    }
+    button{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor:pointer;
+    }
+    button:hover{border-color: rgba(122,167,255,.45)}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+    .card{
+      grid-column: span 12;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow:hidden;
+    }
+    details{width:100%}
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom: 1px solid var(--line);
+      user-select:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .pill{
+      font-size:12px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      flex: 0 0 auto;
+    }
+    .title{
+      font-weight:650;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 72vw;
+    }
+    .chev{
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-size: 12px;
+    }
+    details[open] .chev{color: var(--accent)}
+    .content{
+      padding: 12px 14px 14px;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    a.link{
+      display:inline-block;
+      text-decoration:none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 9px 10px;
+      border-radius: 10px;
+    }
+    a.link:hover{border-color: rgba(122,167,255,.45)}
+    iframe{
+      width:100%;
+      height: 72vh;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background:#0f1117;
+    }
+    .hint{
+      color: var(--muted);
+      font-size:12px;
+      margin-top: 10px;
+      line-height:1.35;
+    }
+
+    @media (min-width: 920px){
+      .card{grid-column: span 12;}
+      .title{max-width: 880px;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="padding:0 12px;">
+      <h1>Drive Library</h1>
+      <div class="sub">
+        First 4 items start expanded. Everything is collapsible. Search filters titles/IDs.
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Search (e.g., part of an ID like 1WEotl...)" autocomplete="off" />
+      <button id="expandAll" type="button">Expand all</button>
+      <button id="collapseAll" type="button">Collapse all</button>
+    </div>
+
+    <div id="list" class="grid"></div>
+  </div>
+
+  <script>
+    // Paste / edit labels if you want nicer names.
+    // For Google Drive FILES we embed with /preview.
+    // For FOLDERS, Drive doesn't reliably iframe-embed publicly; we show open link + a note.
+    const items = [
+      { type: "file",   id: "15jnpLH9806qhWb7T_2F4DBScUgXbwqLT", label: "Item 1 (15jnpLH...)" },
+      { type: "folder", id: "1j7gen_iN6CjLKheRcr6Y4vwN6oqAkn7i", label: "Folder (1j7gen...)" },
+      { type: "file",   id: "1WEotlYHRk7Vcn1zCKebKQciZV6YT8Hx4", label: "Item 2 (1WEotl...)" },
+      { type: "file",   id: "19aTyfLIom6jOAOvqB0nOgEBgEK4bWhXf", label: "Item 3 (19aTyf...)" },
+
+      { type: "file", id: "1F7N6Od7u25FkJTLUOx2qejG9X6c0QlnZ", label: "Item 4 (1F7N6O...)" },
+      { type: "file", id: "1GbKDRNV7vBIZjH2X1Q6cQAnAam2XyWYn", label: "Item 5 (1GbKDR...)" },
+      { type: "file", id: "1369u_M8_mnM0dflT6G75S9N5ysHcwN_z", label: "Item 6 (1369u_...)" },
+      { type: "file", id: "1tx7-DgxjTnUN8kNkK6xK47HRRhAh8wwW", label: "Item 7 (1tx7-D...)" },
+      { type: "file", id: "1SHHViN0mgM0NsszXlFej3Ug7NdgjRHGE", label: "Item 8 (1SHHVi...)" },
+      { type: "file", id: "1gtqRFAmTbpf1N_sEHu-DBL4ObPUKwIRP", label: "Item 9 (1gtqRF...)" },
+      { type: "file", id: "1mT0WfeKll7EeC79THK0-HcOA8D8X6ZaX", label: "Item 10 (1mT0Wf...)" },
+      { type: "file", id: "1TE0qwGDSWe-k02a4tDLW6_C-fent3dYX", label: "Item 11 (1TE0qw...)" },
+      { type: "file", id: "1D7UGbYN4tNSD-XtrkvMUYDD2lH5jTd9O", label: "Item 12 (1D7UGb...)" },
+      { type: "file", id: "1ZLa1HyBMASBRfzP2gZZSWHD_7QFO0Wxj", label: "Item 13 (1ZLa1H...)" },
+      { type: "file", id: "1af85x1ZUrc-OY099ytlfw89zUrqlrYhY", label: "Item 14 (1af85x...)" },
+      { type: "file", id: "1amcfT7IJcIBtRsLC4QqNwAjJGjgM1P0J", label: "Item 15 (1amcfT...)" },
+      { type: "file", id: "1i5Q70dcGbiy_AiXuVQuH1xcfdhqrjKiC", label: "Item 16 (1i5Q70...)" },
+      { type: "file", id: "1mOc2nnUO4d0Q-QyR3heJBOPgr3whOnC5", label: "Item 17 (1mOc2n...)" },
+      { type: "file", id: "15H1rTOSIoVdPL_kpTDZWR4G8xGw_iqWz", label: "Item 18 (15H1rT...)" },
+      { type: "file", id: "1C6xKjkiEyU81w1QwyroS4hEHbwgQeZ-e", label: "Item 19 (1C6xKj...)" },
+      { type: "file", id: "1z3kSxrAUAAI3z8weSfwXCMJAtI4pQ32N", label: "Item 20 (1z3kSx...)" },
+      { type: "file", id: "1bDIz_NqQLUvQn3OONH_ljNgns8MWN3L9", label: "Item 21 (1bDIz_...)" },
+      { type: "file", id: "1k4Ss82ya5vtUC-xlfNKhooQhW4KWMujJ", label: "Item 22 (1k4Ss8...)" },
+      { type: "file", id: "1jHwvigrH57ApFCsPXnB_sxm7Sv4p_JBN", label: "Item 23 (1jHwvi...)" },
+      { type: "file", id: "1a1b-LNcZgzdurTeHaeI7koNK3nm4d0IW", label: "Item 24 (1a1b-L...)" },
+      { type: "file", id: "15-9shx1KKNgiklQ_OFV1g6ToHG6VgBJ3", label: "Item 25 (15-9sh...)" },
+      { type: "file", id: "1K8mighUKHISSnicCNDapr3y3kRfe9j3Z", label: "Item 26 (1K8mig...)" },
+      { type: "file", id: "13fUMk-FGNutUSb7wVrakV5qv5Yy3L348", label: "Item 27 (13fUMk...)" },
+      { type: "file", id: "1nPdwXTNFQ-vVWlAfaMH9Wce_gbb6E0DT", label: "Item 28 (1nPdwX...)" },
+      { type: "file", id: "1f9DU3ToS3r-hnJ1q0iVn129poFozmceG", label: "Item 29 (1f9DU3...)" },
+      { type: "file", id: "1fGWc-ioYe7T-r6GmjJTKE3cUdD1sxpRP", label: "Item 30 (1fGWc-...)" },
+      { type: "file", id: "112WpVLn1oJMZbzK-Q6BHG8FcGe_GSxd4", label: "Item 31 (112WpV...)" },
+      { type: "file", id: "1xoYMpkeCIMQYeoC9lZPmhTatwKAzAoaP", label: "Item 32 (1xoYMp...)" },
+      { type: "file", id: "1vdi2uXBiDavskKGMij8FAnzcJegAdO1v", label: "Item 33 (1vdi2u...)" },
+      { type: "file", id: "1cocKJuW6QCcI_3sCelXr2KiUSGdRcK94", label: "Item 34 (1cocKJ...)" },
+      { type: "file", id: "1YQCJkEYfjAc1QlNZG80zsRCzCwA5o7rc", label: "Item 35 (1YQCJk...)" },
+      { type: "file", id: "1v_qeSf82PnhjOZGMVIEcEL0u3c6hHEM6", label: "Item 36 (1v_qeS...)" },
+      { type: "file", id: "1cyBdeIn_rh88CiqdTIFik1XReBUMHk4b", label: "Item 37 (1cyBde...)" },
+      { type: "file", id: "1pVkRkkzgmw92B-J0FrWrliNEYJbKisNR", label: "Item 38 (1pVkRk...)" },
+      { type: "file", id: "1ex6hnGLA-FysmPwpa1JoaSCBdewOuTy8", label: "Item 39 (1ex6hn...)" },
+      { type: "file", id: "1hZ4O6_HGdZ4zpz7GA4h75S4ACco4oare", label: "Item 40 (1hZ4O6...)" },
+      { type: "file", id: "1IfF2LgtziOHocvUwbD4YVNzRiXIahVJ7", label: "Item 41 (1IfF2L...)" },
+      { type: "file", id: "1lc9cqIdStvEux9Zo4TDcHZrq-GLwMAe2", label: "Item 42 (1lc9cq...)" },
+      { type: "file", id: "1vNXoUvZ6G3mvPLkqg_UdAdMCFBwCXoa7", label: "Item 43 (1vNXoU...)" },
+      { type: "file", id: "1oWuvuJzhwEWKqdrm2DMwoBc5VwbD9mRr", label: "Item 44 (1oWuvu...)" },
+      { type: "file", id: "1FMU580_fOrWTXSAqvIy0PzQXr9_Z3-sc", label: "Item 45 (1FMU58...)" },
+      { type: "file", id: "1yiJtoBluTF2nORjGZoxbtawn4KuHefOw", label: "Item 46 (1yiJto...)" },
+      { type: "file", id: "14UydhFVy7qX9-iwDIQE4PFANvAd9pLnT", label: "Item 47 (14Uydh...)" },
+      { type: "file", id: "150b96HQW1p1Qhi_LAke0J3N8i2skSUHy", label: "Item 48 (150b96...)" },
+      { type: "file", id: "1PIB6Y7k-BjO1D5_bduAx5FEsvkxQ4je5", label: "Item 49 (1PIB6Y...)" },
+      { type: "file", id: "1lk1fQ8zVapKi7KzcEQLpUU9HgoQYiu5s", label: "Item 50 (1lk1fQ...)" },
+      { type: "file", id: "1SBbCNhFNLfzdzsSa_tdiiUnypxQGg9l1", label: "Item 51 (1SBbCN...)" },
+      { type: "file", id: "1t9ss_X6Gwjnc0MY_04pM7WHQ776abxZy", label: "Item 52 (1t9ss_...)" },
+      { type: "file", id: "1eMCSuu5hXmqqIWCR82AbZyY0eZ2am-GR", label: "Item 53 (1eMCSu...)" },
+      { type: "file", id: "1pXW6xXqCQaJhgBEV8kCzXZU4v9sGgYp6", label: "Item 54 (1pXW6x...)" },
+      { type: "file", id: "1I8OiwwmktXdC-sDG-qHbtG4KXe4QhBnm", label: "Item 55 (1I8Oiw...)" },
+      { type: "file", id: "1fhVJz8GPBdBqjkZ-s5tYhB0ajPFbOuNk", label: "Item 56 (1fhVJz...)" },
+      { type: "file", id: "1xW3SKYZPOdF8y1bxWBMsKPf-9sMv5_IB", label: "Item 57 (1xW3SK...)" },
+      { type: "file", id: "1I3Ch_aP3fKoJUzeQCBAkA71PWBi46sWo", label: "Item 58 (1I3Ch_...)" },
+      { type: "file", id: "1a3cOcYhH6VyT45_85zW4NgBjed1MzNIx", label: "Item 59 (1a3cOc...)" },
+      { type: "file", id: "14I6OvCdI1Sh4J6VF7SRnEK_1Je9q5tiN", label: "Item 60 (14I6Ov...)" },
+      { type: "file", id: "1HsjCvpQsmLFalGEZFdnRFLZ6C9pRrkss", label: "Item 61 (1HsjCv...)" },
+      { type: "file", id: "1XVs0ZDHZUUC_8Xf4dqWEZIPWWi1W9oOI", label: "Item 62 (1XVs0Z...)" },
+      { type: "file", id: "1pZLXd4d3Pp2wk63dKpEaYBgb8xfXEi_9", label: "Item 63 (1pZLXd...)" },
+      { type: "file", id: "1BpqByyfLPP0_4wapySP8VuzVCQTTpT8G", label: "Item 64 (1BpqBy...)" },
+      { type: "file", id: "19pQq77pAYcPs2i_I8BagsSZElCVoVG12", label: "Item 65 (19pQq7...)" },
+      { type: "file", id: "1LL9acMmqTaTfquon7r-ixPPwSQObArvJ", label: "Item 66 (1LL9ac...)" },
+      { type: "file", id: "1UIOlIlLGaA7yFqMLiROdUKwYT1cxlL4g", label: "Item 67 (1UIOlI...)" },
+      { type: "file", id: "1_K8fLqIoOJC60-69SAo1bdaR051FodM9", label: "Item 68 (1_K8fL...)" },
+      { type: "file", id: "1UXpEvuOTJW-jzGgaQey8AQMihW3vuxdC", label: "Item 69 (1UXpEv...)" },
+      { type: "file", id: "1mHfscEAgQRYs1e9f1srcdwRFn_Ohc12R", label: "Item 70 (1mHfsc...)" },
+      { type: "file", id: "1r9VDXlzUwk8Q0D2AjxGs-MjvYVmEVv6x", label: "Item 71 (1r9VDX...)" },
+      { type: "file", id: "1so2_ZH6GIflLkjGTE1rnE3WbwbzJM_FB", label: "Item 72 (1so2_Z...)" },
+      { type: "file", id: "1qke7x1v7_z9xscV7Awy7A1GFYLReHVSz", label: "Item 73 (1qke7x...)" },
+      { type: "file", id: "1jlmvOmxRBoCZEjiW8QnkXN8sx7B3fqAg", label: "Item 74 (1jlmvO...)" },
+      { type: "file", id: "1V60_xEpUrrJ-WbTKTd4AfFaazJLD2Hfa", label: "Item 75 (1V60_x...)" },
+      { type: "file", id: "1IWy_5d449BMTKsi_pMVCwLku8xZ_xDjV", label: "Item 76 (1IWy_5...)" },
+      { type: "file", id: "1v1G0piVPGPK1T8-F4wlThaDDVa6P4K5_", label: "Item 77 (1v1G0p...)" },
+      { type: "file", id: "1ejAoN1MN-YVi8V0SAAIVuJOFYsJtm3m2", label: "Item 78 (1ejAoN...)" },
+      { type: "file", id: "1NtPacj3nyJgR0aI08bpVq22gXJ0HeNl3", label: "Item 79 (1NtPac...)" },
+      { type: "file", id: "1GIl9maCrhsK_imIKgNS3mrfNpahlytWh", label: "Item 80 (1GIl9m...)" },
+      { type: "file", id: "1zA83iSv5Xm5zRvSxUxnlRq_LuDpySgbA", label: "Item 81 (1zA83i...)" },
+      { type: "file", id: "1oZp9QNS_fQ9iaVxPWtexpbOfNT645FfU", label: "Item 82 (1oZp9Q...)" },
+      { type: "file", id: "1R6ESfmeSjrYFFQ20B61gEYm0pGdmdUUP", label: "Item 83 (1R6ESf...)" },
+      { type: "file", id: "1by4s9msksU22NvwLF3So8a1CLQ6181uX", label: "Item 84 (1by4s9...)" },
+      { type: "file", id: "1m9HaDRXWTSRI6ApOHpsr5AtA184VU8E_", label: "Item 85 (1m9HaD...)" },
+      { type: "file", id: "1TVkRJ1Gl2nHGSJQSwAkWkLpvpnKkO7z3", label: "Item 86 (1TVkRJ...)" },
+    ];
+
+    const listEl = document.getElementById("list");
+    const qEl = document.getElementById("q");
+
+    function driveViewUrl(item){
+      if(item.type === "folder"){
+        return `https://drive.google.com/drive/folders/${item.id}`;
+      }
+      return `https://drive.google.com/file/d/${item.id}/view`;
+    }
+
+    function drivePreviewUrl(item){
+      return `https://drive.google.com/file/d/${item.id}/preview`;
+    }
+
+    function driveDownloadUrl(item){
+      // Works for many public files; if Drive blocks direct download, the View link still works.
+      return `https://drive.google.com/uc?export=download&id=${item.id}`;
+    }
+
+    function render(){
+      const q = (qEl.value || "").trim().toLowerCase();
+      listEl.innerHTML = "";
+
+      let shown = 0;
+
+      items.forEach((item, idx) => {
+        const hay = `${item.label} ${item.id} ${item.type}`.toLowerCase();
+        if(q && !hay.includes(q)) return;
+
+        shown++;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const details = document.createElement("details");
+        // First 4 overall items visible/expanded by default (based on original order, not filtered)
+        if(idx < 4) details.open = true;
+
+        const summary = document.createElement("summary");
+
+        const left = document.createElement("div");
+        left.className = "left";
+
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = item.type.toUpperCase();
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = item.label;
+
+        left.appendChild(pill);
+        left.appendChild(title);
+
+        const chev = document.createElement("div");
+        chev.className = "chev";
+        chev.textContent = "Click to expand ▸";
+
+        summary.appendChild(left);
+        summary.appendChild(chev);
+
+        details.appendChild(summary);
+
+        const content = document.createElement("div");
+        content.className = "content";
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const aOpen = document.createElement("a");
+        aOpen.className = "link";
+        aOpen.href = driveViewUrl(item);
+        aOpen.target = "_blank";
+        aOpen.rel = "noopener noreferrer";
+        aOpen.textContent = item.type === "folder" ? "Open folder" : "Open file";
+
+        actions.appendChild(aOpen);
+
+        if(item.type === "file"){
+          const aDl = document.createElement("a");
+          aDl.className = "link";
+          aDl.href = driveDownloadUrl(item);
+          aDl.target = "_blank";
+          aDl.rel = "noopener noreferrer";
+          aDl.textContent = "Download (if allowed)";
+          actions.appendChild(aDl);
+        }
+
+        content.appendChild(actions);
+
+        if(item.type === "file"){
+          const iframe = document.createElement("iframe");
+          iframe.loading = "lazy";
+          iframe.allow = "autoplay";
+          iframe.src = drivePreviewUrl(item);
+          content.appendChild(iframe);
+
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "If the embed shows a permission error: set the file to “Anyone with the link can view” in Drive.";
+          content.appendChild(hint);
+        } else {
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "Folders don’t reliably embed in an iframe. Use “Open folder” to browse.";
+          content.appendChild(hint);
+        }
+
+        details.appendChild(content);
+        card.appendChild(details);
+        listEl.appendChild(card);
+
+        details.addEventListener("toggle", () => {
+          chev.textContent = details.open ? "Collapse ▾" : "Click to expand ▸";
+        });
+        // initialize chevron state
+        chev.textContent = details.open ? "Collapse ▾" : "Click to expand ▸";
+      });
+
+      if(shown === 0){
+        const empty = document.createElement("div");
+        empty.style.color = "rgba(255,255,255,.7)";
+        empty.style.padding = "14px 6px";
+        empty.textContent = "No matches. Try a different search.";
+        listEl.appendChild(empty);
+      }
+    }
+
+    document.getElementById("expandAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = true);
+    });
+
+    document.getElementById("collapseAll").addEventListener("click", () => {
+      document.querySelectorAll("#list details").forEach(d => d.open = false);
+    });
+
+    qEl.addEventListener("input", render);
+
+    render();
+  </script>
+</body>
+</html>
